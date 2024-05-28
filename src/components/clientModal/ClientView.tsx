@@ -13,7 +13,7 @@ export default function ClientView() {
   const animatedSensor = useAnimatedSensor(SensorType.GYROSCOPE, {
     interval: 100,
   });
-  console.log('animatedSensor', animatedSensor);
+  // console.log('animatedSensor', animatedSensor);
   return (
     <View style={styles.wrapper} {...events}>
       <Canvas>
@@ -32,7 +32,7 @@ export default function ClientView() {
           <ambientLight />
           <pointLight position={[0, 0.5, 1]} intensity={3} />
 
-          <Client animatedSensor={animatedSensor} />
+          <Client/>
         </Suspense>
       </Canvas>
 

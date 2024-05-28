@@ -10,11 +10,17 @@ const PerspectiveView = () => {
   const pinkRef = useRef(null);
   const orangeRef = useRef(null);
   const skyblueRef = useRef(null);
+  const pinkRef1 = useRef(null);
+  const orangeRef1 = useRef(null);
+  const skyblueRef1 = useRef(null);
 
-  const [selectedMeshPosition, setSelectedMeshPosition] = useState([0, 0, -2]);
-  const [pinkmeshPosition, setPinkPosition] = useState([0, 0, -2]);
-  const [orangemeshPosition, setOrangePosition] = useState([1, 0, -4]);
-  const [skybluemeshPosition, setSkyBluePosition] = [-1, 0, -6];
+  const [selectedMeshPosition, setSelectedMeshPosition] = useState([0, 0, 3]);
+  const [pinkmeshPosition, setPinkPosition] = useState([-1, 0, 2]);
+  const [orangemeshPosition, setOrangePosition] = useState([0, -1, -4]);
+  const [skybluemeshPosition, setSkyBluePosition] = useState([-1, 0, -6]);
+  const [pinkmeshPosition1, setPinkPosition1] = useState([0, 0, -1]);
+  const [orangemeshPosition1, setOrangePosition1] = useState([0.5, 1, -.5]);
+  const [skybluemeshPosition1, setSkyBluePosition1] = useState([-1, 1, -15]);
   const [selectedColor, setSelectedColor] = useState('');
   const [moveAll, setMoveAll] = useState('');
 
@@ -28,16 +34,25 @@ const PerspectiveView = () => {
       setSelectedMeshPosition(orangeRef.current?.position);
     } else if (props.title === 'skyblue') {
       setSelectedMeshPosition(skyblueRef.current?.position);
-    } else {
+    } else if (props.title === 'orange1') {
+      setSelectedMeshPosition(orangeRef1.current?.position);
+    } else if (props.title === 'skyblue1') {
+      setSelectedMeshPosition(skyblueRef1.current?.position);
+    } else if (props.title === 'pink1') {
+      setSelectedMeshPosition(pinkRef1.current?.position);
+    }else {
       console.log('Else codition called');
     }
   };
 
   useEffect(() => {
     const functionCalls = [
-      { func: () => handleButtonPress({ title: 'pink' }), delay: 1000 },
-      { func: () => handleButtonPress({ title: 'orange' }), delay: 5000 },
-      { func: () => handleButtonPress({ title: 'skyblue' }), delay: 10000 }
+      {func: () => handleButtonPress({title: 'pink'}), delay: 1000},
+      {func: () => handleButtonPress({title: 'orange'}), delay: 5000},
+      {func: () => handleButtonPress({title: 'skyblue'}), delay: 10000},
+      {func: () => handleButtonPress({title: 'pink1'}), delay: 15000},
+      {func: () => handleButtonPress({title: 'orange1'}), delay: 20000},
+      {func: () => handleButtonPress({title: 'skyblue1'}), delay: 20000},
     ];
 
     let currentIndex = 0;
@@ -45,34 +60,12 @@ const PerspectiveView = () => {
     const interval = setInterval(() => {
       functionCalls[currentIndex].func();
       currentIndex = (currentIndex + 1) % functionCalls.length;
-      console.log("current index",currentIndex)
-    }, 3000); // This interval will ensure immediate execution of the next function after its delay
+      console.log('current index', currentIndex);
+    }, 3000);
 
-    // Clear the interval on component unmount
     return () => clearInterval(interval);
   }, []);
 
-  // useEffect(()=>{
-  //   setTimeout(()=>{
-
-  //     handleButtonPress({title:'pink'})
-
-  //   },1000)
-  // },[])
-  // useEffect(()=>{
-  //   setTimeout(()=>{
-
-  //     handleButtonPress({title:'orange'})
-
-  //   },5000)
-  // },[])
-  // useEffect(()=>{
-  //   setTimeout(()=>{
-
-  //     handleButtonPress({title:'skyblue'})
-
-  //   },10000)
-  // },[])
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <Canvas>
@@ -80,20 +73,26 @@ const PerspectiveView = () => {
         <Suspense fallback={null}>
           <PerspectiveCamera
             ref={cameraRef}
-            position={[0, 1, 10]}
+            position={[0, -.5,10]}
             makeDefault
-            fov={150}
+            fov={130}
             onUpdate={c => c.updateProjectionMatrix()}
-            zoom={1}>
+            zoom={5}>
             {texture => (
               <Meshes
                 selectedMeshPosition={selectedMeshPosition}
                 pinkRef={pinkRef}
                 orangeRef={orangeRef}
                 skyblueRef={skyblueRef}
+                pinkRef1={pinkRef1}
+                orangeRef1={orangeRef1}
+                skyblueRef1={skyblueRef1}
                 pinkmeshPosition={pinkmeshPosition}
                 orangemeshPosition={orangemeshPosition}
                 skybluemeshPosition={skybluemeshPosition}
+                pinkmeshPosition1={pinkmeshPosition1}
+                orangemeshPosition1={orangemeshPosition1}
+                skybluemeshPosition1={skybluemeshPosition1}
                 selectedColor={selectedColor}
                 mainCamRef={cameraRef}
               />
